@@ -41,4 +41,8 @@ public class PostStore {
     public Collection<Post> findAll() {
         return posts.values();
     }
+
+    public void add(Integer id, Post post) {
+        posts.putIfAbsent(id, post);
+    }
 }
