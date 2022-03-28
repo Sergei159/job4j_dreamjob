@@ -12,26 +12,23 @@ public class PostStore {
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
-    private int ids = 1;
+    private int ids = 4;
+
 
     private PostStore() {
-        posts.put(ids,
-                new Post(
-                ids++,
+        posts.put(1, new Post(
+                1,
                 "Junior Java Job",
                 "without experience",
                 "23.03.2022")
         );
-        posts.put(
-                ids,
-                new Post(ids++,
+        posts.put(2, new Post(2,
                         "Middle Java Job",
                         "1-3 years of experience",
                         "23.03.2022")
         );
-        posts.put(ids,
-                new Post(
-                ids++,
+        posts.put(3, new Post(
+                3,
                 "Senior Java Job",
                 "3 and more years of experience",
                 "23.03.2022")
@@ -46,17 +43,27 @@ public class PostStore {
         return posts.values();
     }
 
-    public void add(Integer id, Post post) {
-        posts.putIfAbsent(id, post);
-    }
-    public Post findById(int id) {
-        return posts.getOrDefault(id, new Post(
-                0, "", "", ""
-        ));
+    public Post add(Post post) {
+        post.setId(ids);
+        Post result = posts.putIfAbsent(ids, post);
+        if (result != null) {
+            ids++;
+        }
+        return result;
     }
 
-    public void create(Post post) {
-        posts.put(ids, new Post(ids++, "", "", ""));
+
+    public Post findById(int id) {
+        return posts.getOrDefault(id, add(
+                new Post(ids++, "", "", "")));
+    }
+
+
+    public Post create() {
+        Post result = new Post(ids, "", "", "");
+        posts.put(ids++, result);
+        return result;
+
     }
 
     public void update(Post post) {

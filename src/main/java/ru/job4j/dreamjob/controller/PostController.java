@@ -23,11 +23,7 @@ public class PostController {
     }
     @GetMapping("/addPost")
     public String addPost(Model model) {
-        model.addAttribute("post", new Post(1,
-                "",
-                "",
-                "")
-        );
+        model.addAttribute("post", store.create());
         return "addPost";
     }
 
@@ -35,12 +31,13 @@ public class PostController {
     public String formAddPost(Model model) {
         return "addPost";
     }
-
+/**
     @PostMapping("/savePost")
     public String savePost(@ModelAttribute Post post) {
-        store.add(1, post);
+        store.add(post);
         return "redirect:/posts";
     }
+ */
 
     @GetMapping("/formUpdatePost/{postId}")
     public String formUpdatePost(Model model, @PathVariable("postId") int id) {
@@ -56,7 +53,7 @@ public class PostController {
 
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post) {
-        store.create(post);
+        store.add(post);
         return "redirect:/posts";
     }
 
