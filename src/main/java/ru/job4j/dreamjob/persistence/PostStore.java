@@ -1,6 +1,7 @@
 package ru.job4j.dreamjob.persistence;
 
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Post;
 
@@ -8,12 +9,13 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@ThreadSafe
 @Repository
 public class PostStore {
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
-    private AtomicInteger ids = new AtomicInteger(4);
+    private final AtomicInteger ids = new AtomicInteger(4);
 
 
     private PostStore() {
