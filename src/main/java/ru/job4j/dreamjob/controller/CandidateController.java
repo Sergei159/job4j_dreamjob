@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.store.CandidateStore;
+import ru.job4j.dreamjob.persistence.CandidateStore;
 
 @Controller
 public class CandidateController {
-    private final CandidateStore store = CandidateStore.instOf();
+    private final CandidateStore store;
+
+    public CandidateController(CandidateStore store) {
+        this.store = store;
+    }
 
     @GetMapping("/candidates")
     public String candidates(Model model) {
@@ -21,7 +25,8 @@ public class CandidateController {
 
     @GetMapping("/addCandidate")
     public String addCandidate(Model model) {
-        model.addAttribute("candidate", new Candidate(0, "", "", ""));
+        model.addAttribute("candidate", new Candidate(
+                0, "Заполните поле", "Заполните поле", ""));
         return "addCandidate";
     }
 

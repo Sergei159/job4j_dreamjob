@@ -7,25 +7,35 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Post;
-import ru.job4j.dreamjob.store.PostStore;
-
-import javax.servlet.http.HttpServletRequest;
+import ru.job4j.dreamjob.service.PostService;
 
 @Controller
 public class PostController {
 
-    private final PostStore store = PostStore.instOf();
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping("/posts")
     public String posts(Model model) {
-        model.addAttribute("posts", store.findAll());
+        model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
     @GetMapping("/addPost")
     public String addPost(Model model) {
-        model.addAttribute("post", new Post(0, "", "", ""));
+        model.addAttribute("post", new Post(
+                0, "Заполните поле", "Заполните поле", ""));
         return "addPost";
+    }
+
+    @PostMapping("/savePost")
+    public String savePost(@ModelAttribute Post post) {
+        postService.add(post);
+        return "redirect:/posts";
+
     }
 
     @GetMapping("/formAddPost")
@@ -35,19 +45,19 @@ public class PostController {
 
     @GetMapping("/formUpdatePost/{postId}")
     public String formUpdatePost(Model model, @PathVariable("postId") int id) {
-        model.addAttribute("post", store.findById(id));
+        model.addAttribute("post", postService.findById(id));
         return "updatePost";
     }
 
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
-        store.update(post);
+        postService.update(post);
         return "redirect:/posts";
     }
 
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post) {
-        store.add(post);
+        postService.add(post);
         return "redirect:/posts";
     }
 
