@@ -21,7 +21,7 @@ public class CandidateController {
 
     @GetMapping("/addCandidate")
     public String addCandidate(Model model) {
-        model.addAttribute("candidate", store.create());
+        model.addAttribute("candidate", new Candidate(0, "", "", ""));
         return "addCandidate";
     }
 
@@ -29,13 +29,6 @@ public class CandidateController {
     public String formAddCandidate(Model model) {
         return "addCandidate";
     }
-/**
-    @PostMapping("/saveCandidate")
-    public String saveCandidate(@ModelAttribute Candidate candidate) {
-        store.add(candidate);
-        return "redirect:/candidates";
-    }
- */
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
     public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {

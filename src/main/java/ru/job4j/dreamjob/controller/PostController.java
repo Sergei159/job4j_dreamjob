@@ -21,9 +21,10 @@ public class PostController {
         model.addAttribute("posts", store.findAll());
         return "posts";
     }
+
     @GetMapping("/addPost")
     public String addPost(Model model) {
-        model.addAttribute("post", store.create());
+        model.addAttribute("post", new Post(0, "", "", ""));
         return "addPost";
     }
 
@@ -31,13 +32,6 @@ public class PostController {
     public String formAddPost(Model model) {
         return "addPost";
     }
-/**
-    @PostMapping("/savePost")
-    public String savePost(@ModelAttribute Post post) {
-        store.add(post);
-        return "redirect:/posts";
-    }
- */
 
     @GetMapping("/formUpdatePost/{postId}")
     public String formUpdatePost(Model model, @PathVariable("postId") int id) {

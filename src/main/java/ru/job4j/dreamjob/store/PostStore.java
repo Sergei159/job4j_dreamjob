@@ -5,6 +5,7 @@ import ru.job4j.dreamjob.model.Post;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PostStore {
 
@@ -12,7 +13,7 @@ public class PostStore {
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
-    private int ids = 4;
+    private AtomicInteger ids = new AtomicInteger(4);
 
 
     private PostStore() {
@@ -44,26 +45,17 @@ public class PostStore {
     }
 
     public Post add(Post post) {
-        post.setId(ids);
-        Post result = posts.putIfAbsent(ids, post);
+        post.setId(ids.get());
+        Post result = posts.putIfAbsent(ids.get(), post);
         if (result != null) {
-            ids++;
+            ids.getAndIncrement();
         }
         return result;
     }
 
 
     public Post findById(int id) {
-        return posts.getOrDefault(id, add(
-                new Post(ids++, "", "", "")));
-    }
-
-
-    public Post create() {
-        Post result = new Post(ids, "", "", "");
-        posts.put(ids++, result);
-        return result;
-
+        return posts.get(id);
     }
 
     public void update(Post post) {

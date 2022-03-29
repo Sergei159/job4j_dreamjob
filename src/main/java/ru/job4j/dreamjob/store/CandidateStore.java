@@ -1,11 +1,11 @@
 package ru.job4j.dreamjob.store;
 
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.model.Post;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CandidateStore {
 
@@ -13,7 +13,7 @@ public class CandidateStore {
 
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
-    private int ids = 4;
+    private AtomicInteger ids = new AtomicInteger(4);
 
     private CandidateStore() {
         candidates.put(1, new Candidate(
@@ -46,26 +46,17 @@ public class CandidateStore {
     }
 
     public Candidate add(Candidate candidate) {
-        candidate.setId(ids);
-        Candidate result = candidates.putIfAbsent(ids, candidate);
+        candidate.setId(ids.get());
+        Candidate result = candidates.putIfAbsent(ids.get(), candidate);
         if (result != null) {
-            ids++;
+            ids.getAndIncrement();
         }
         return result;
     }
 
 
     public Candidate findById(int id) {
-        return candidates.getOrDefault(id, add(
-                new Candidate(ids++, "", "", "")));
-    }
-
-
-    public Candidate create() {
-        Candidate result = new Candidate(ids, "", "", "");
-        candidates.put(ids++, result);
-        return result;
-
+        return candidates.get(id);
     }
 
     public void update(Candidate candidate) {
