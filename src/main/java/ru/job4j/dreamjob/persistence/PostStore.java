@@ -3,6 +3,7 @@ package ru.job4j.dreamjob.persistence;
 
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
 import java.util.*;
@@ -17,25 +18,31 @@ public class PostStore {
 
     private final AtomicInteger ids = new AtomicInteger(4);
 
+    private final CityStore cityStore = new CityStore();
+
 
     private PostStore() {
         posts.put(1, new Post(
                 1,
                 "Junior Java Job",
                 "without experience",
-                "23.03.2022")
-        );
+                "23.03.2022",
+                cityStore.findById(1)
+
+        ));
         posts.put(2, new Post(2,
                         "Middle Java Job",
                         "1-3 years of experience",
-                        "23.03.2022")
-        );
+                        "23.03.2022",
+                cityStore.findById(2)
+        ));
         posts.put(3, new Post(
                 3,
                 "Senior Java Job",
                 "3 and more years of experience",
-                "23.03.2022")
-        );
+                "23.03.2022",
+                cityStore.findById(3)
+        ));
     }
 
 

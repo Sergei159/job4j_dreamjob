@@ -9,12 +9,19 @@ public class Post  implements Serializable {
     private String description;
     private String created;
     private boolean visible;
+    private City city;
 
-    public Post(int id, String name, String description, String created) {
+    public Post() {
+
+    }
+
+
+    public Post(int id, String name, String description, String created, City city) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
+        this.city = city;
     }
 
 
@@ -27,12 +34,12 @@ public class Post  implements Serializable {
             return false;
         }
         Post post = (Post) o;
-        return id == post.id && Objects.equals(name, post.name) && Objects.equals(created, post.created);
+        return id == post.id && Objects.equals(name, post.name) && Objects.equals(created, post.created) && Objects.equals(city, post.city);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, created);
+        return Objects.hash(id, name, created, city);
     }
 
     public int getId() {
@@ -73,6 +80,14 @@ public class Post  implements Serializable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }
 
