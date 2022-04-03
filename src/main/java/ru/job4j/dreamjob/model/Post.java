@@ -3,7 +3,7 @@ package ru.job4j.dreamjob.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Post  implements Serializable {
+public class Post  {
     private int id;
     private String name;
     private String description;

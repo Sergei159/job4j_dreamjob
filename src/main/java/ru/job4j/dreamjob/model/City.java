@@ -42,11 +42,12 @@ public class City implements Serializable {
             return false;
         }
         City city = (City) o;
-        return id == city.id;
+        return id == city.id && Objects.equals(name, city.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name);
     }
 }
+
