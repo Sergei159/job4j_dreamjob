@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,24 +26,26 @@ public class PostStore {
         posts.put(1, new Post(
                 1,
                 "Junior Java Job",
-                "without experience",
-                "23.03.2022",
-                cityStore.findById(1)
-
+                "without experience"
         ));
+        posts.get(1).setCreated(LocalDateTime.now());
+        posts.get(1).setCity(cityStore.findById(1));
+
         posts.put(2, new Post(2,
                         "Middle Java Job",
-                        "1-3 years of experience",
-                        "23.03.2022",
-                cityStore.findById(2)
+                        "1-3 years of experience"
+
         ));
+        posts.get(2).setCreated(LocalDateTime.now());
+        posts.get(2).setCity(cityStore.findById(2));
+
         posts.put(3, new Post(
                 3,
                 "Senior Java Job",
-                "3 and more years of experience",
-                "23.03.2022",
-                cityStore.findById(3)
+                "3 and more years of experience"
         ));
+        posts.get(3).setCreated(LocalDateTime.now());
+        posts.get(3).setCity(cityStore.findById(3));
     }
 
 

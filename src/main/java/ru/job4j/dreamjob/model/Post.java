@@ -1,13 +1,17 @@
 package ru.job4j.dreamjob.model;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Post  {
+    private static final DateTimeFormatter FORMATTER
+            = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy");
+
     private int id;
     private String name;
     private String description;
-    private String created;
+    private LocalDateTime created = LocalDateTime.now();
     private boolean visible;
     private City city;
 
@@ -16,12 +20,10 @@ public class Post  {
     }
 
 
-    public Post(int id, String name, String description, String created, City city) {
+    public Post(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.created = created;
-        this.city = city;
     }
 
 
@@ -66,11 +68,11 @@ public class Post  {
         this.description = description;
     }
 
-    public String getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
