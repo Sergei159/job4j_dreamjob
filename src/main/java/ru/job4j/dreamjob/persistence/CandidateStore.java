@@ -21,21 +21,18 @@ public class CandidateStore {
         candidates.put(1, new Candidate(
                 1,
                 "Sergei",
-                "2 years of java developer experience",
-                "23.03.2022")
+                "2 years of java developer experience")
         );
         candidates.put(
                 2,
                 new Candidate(2,
                         "Alex",
-                        "without experience",
-                        "23.03.2022")
+                        "without experience")
         );
         candidates.put(3, new Candidate(
                 3,
                 "Max",
-                "5 years of java developer experience",
-                "23.03.2022")
+                "5 years of java developer experience")
         );
     }
 

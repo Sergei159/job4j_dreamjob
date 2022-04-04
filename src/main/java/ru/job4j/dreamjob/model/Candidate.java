@@ -9,11 +9,10 @@ public class Candidate {
     private String created;
     private byte[] photo;
 
-    public Candidate(int id, String name, String description, String created) {
+    public Candidate(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.created = created;
     }
 
     public Candidate() {
