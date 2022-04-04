@@ -7,12 +7,16 @@ public class Candidate {
     private String name;
     private String description;
     private String created;
+    private byte[] photo;
 
     public Candidate(int id, String name, String description, String created) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
+    }
+
+    public Candidate() {
     }
 
 
@@ -48,6 +52,14 @@ public class Candidate {
         this.created = created;
     }
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -64,6 +76,7 @@ public class Candidate {
     public int hashCode() {
         return Objects.hash(id, name, created);
     }
+
 
 }
 
