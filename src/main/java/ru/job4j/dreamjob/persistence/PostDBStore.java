@@ -25,7 +25,7 @@ public class PostDBStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post")
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM POST")
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -44,7 +44,7 @@ public class PostDBStore {
         Timestamp timestamp = Timestamp.valueOf(post.getCreated().format(FORMATTER));
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO post(name, description, city, created) VALUES (?, ?, ?, ?)",
+                     "INSERT INTO POST(name, description, city, created) VALUES (?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -66,7 +66,7 @@ public class PostDBStore {
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "UPDATE post SET name = ?, description = ?, city = ? WHERE id = ?",
+                     "UPDATE POST SET name = ?, description = ?, city = ? WHERE id = ?",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -82,7 +82,7 @@ public class PostDBStore {
 
     public Post findById(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM POST WHERE id = ?")
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {

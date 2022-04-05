@@ -22,6 +22,7 @@ public class Post  {
         this.id = id;
         this.name = name;
         this.description = description;
+        city = new City(0, "");
     }
 
 
