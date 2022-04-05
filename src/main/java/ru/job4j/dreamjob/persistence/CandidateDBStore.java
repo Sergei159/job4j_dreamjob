@@ -5,11 +5,16 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class CandidateDBStore {
+
+    private static final DateTimeFormatter FORMATTER
+            = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+
     private final BasicDataSource pool;
 
     public CandidateDBStore(BasicDataSource pool) {
@@ -34,13 +39,15 @@ public class CandidateDBStore {
 
 
     public Candidate add(Candidate candidate) {
+        Timestamp timestamp = Timestamp.valueOf(candidate.getCreated().format(FORMATTER));
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO candidate(name, description) VALUES (?, ?)",
+                     "INSERT INTO candidate(name, description, created) VALUES (?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDescription());
+            ps.setTimestamp(3, timestamp);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -86,11 +93,14 @@ public class CandidateDBStore {
     }
 
     public Candidate setCandidateData(ResultSet resultSet) throws SQLException {
-        return new Candidate(
+        Candidate candidate =  new Candidate(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
                 resultSet.getString("description")
         );
+        Timestamp timestamp = resultSet.getTimestamp("created");
+        candidate.setCreated(timestamp.toLocalDateTime());
+        return candidate;
     }
 
 }

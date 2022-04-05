@@ -2,6 +2,7 @@ package ru.job4j.dreamjob.persistence;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
 import java.sql.*;
@@ -43,12 +44,13 @@ public class PostDBStore {
         Timestamp timestamp = Timestamp.valueOf(post.getCreated().format(FORMATTER));
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO post(name, description, created) VALUES (?, ?, ?)",
+                     "INSERT INTO post(name, description, city, created) VALUES (?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
-            ps.setTimestamp(3, timestamp);
+            ps.setString(3, post.getCity().getName());
+            ps.setTimestamp(4, timestamp);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -64,12 +66,13 @@ public class PostDBStore {
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "UPDATE post SET name = ?, description = ? WHERE id = ?",
+                     "UPDATE post SET name = ?, description = ?, city = ? WHERE id = ?",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
-            ps.setInt(3, post.getId());
+            ps.setString(3, post.getCity().getName());
+            ps.setInt(4, post.getId());
             ps.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,6 +104,7 @@ public class PostDBStore {
         );
         Timestamp timestamp = resultSet.getTimestamp("created");
         post.setCreated(timestamp.toLocalDateTime());
+        post.setCity(new City(0, resultSet.getString("city")));
         return post;
     }
 }
