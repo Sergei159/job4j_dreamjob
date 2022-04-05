@@ -7,6 +7,8 @@ import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,7 +30,6 @@ public class PostStore {
                 "Junior Java Job",
                 "without experience"
         ));
-        posts.get(1).setCreated(LocalDateTime.now());
         posts.get(1).setCity(cityStore.findById(1));
 
         posts.put(2, new Post(2,
@@ -36,7 +37,6 @@ public class PostStore {
                         "1-3 years of experience"
 
         ));
-        posts.get(2).setCreated(LocalDateTime.now());
         posts.get(2).setCity(cityStore.findById(2));
 
         posts.put(3, new Post(
@@ -44,7 +44,6 @@ public class PostStore {
                 "Senior Java Job",
                 "3 and more years of experience"
         ));
-        posts.get(3).setCreated(LocalDateTime.now());
         posts.get(3).setCity(cityStore.findById(3));
     }
 

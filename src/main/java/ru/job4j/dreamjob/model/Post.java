@@ -5,8 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Post  {
-    private static final DateTimeFormatter FORMATTER
-            = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy");
+
 
     private int id;
     private String name;

@@ -5,11 +5,15 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Post;
 
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class PostDBStore {
+
+    private static final DateTimeFormatter FORMATTER
+            = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
     private final BasicDataSource pool;
 
@@ -36,7 +40,7 @@ public class PostDBStore {
 
 
     public Post add(Post post) {
-        Timestamp timestamp = Timestamp.valueOf(post.getCreated());
+        Timestamp timestamp = Timestamp.valueOf(post.getCreated().format(FORMATTER));
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
                      "INSERT INTO post(name, description, created) VALUES (?, ?, ?)",
