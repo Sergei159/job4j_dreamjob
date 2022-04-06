@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.model.Client;
 import ru.job4j.dreamjob.service.ClientService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @ThreadSafe
@@ -24,13 +27,25 @@ public class ClientController {
 
 
     @GetMapping("/clients")
-    public String users(Model model) {
+    public String users(Model model, HttpSession session) {
+        Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            client = new Client();
+            client.setName("Гость");
+        }
+        model.addAttribute("client", client);
         model.addAttribute("clients", clientService.findAll());
         return "clients";
     }
 
     @GetMapping("/addClient")
-    public String addClient(Model model) {
+    public String addClient(Model model, HttpSession session) {
+        Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            client = new Client();
+            client.setName("Гость");
+        }
+        model.addAttribute("client", client);
         model.addAttribute("clients", clientService.findAll());
         return "addClient";
     }
@@ -45,6 +60,12 @@ public class ClientController {
     public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
         model.addAttribute("fail", fail != null);
         return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/index";
     }
 
 
@@ -65,13 +86,15 @@ public class ClientController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute Client user) {
-        Optional<Client> userDb = clientService.findUserByEmailAndPwd(
-                user.getEmail(), user.getPassword()
+    public String login(@ModelAttribute Client client, HttpServletRequest req) {
+        Optional<Client> clientDb = clientService.findUserByEmailAndPwd(
+                client.getEmail(), client.getPassword()
         );
-        if (userDb.isEmpty()) {
+        if (clientDb.isEmpty()) {
             return "redirect:/loginPage?fail=true";
         }
+        HttpSession session = req.getSession();
+        session.setAttribute("client", clientDb.get());
         return "redirect:/index";
     }
 }

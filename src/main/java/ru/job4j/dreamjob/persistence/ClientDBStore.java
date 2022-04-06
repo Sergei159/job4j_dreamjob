@@ -40,11 +40,12 @@ public class ClientDBStore {
     public Optional<Client> add(Client client) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO CLIENT(name, email) VALUES (?, ?)",
+                     "INSERT INTO CLIENT(name, email, password) VALUES (?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, client.getName());
             ps.setString(2, client.getEmail());
+            ps.setString(3, client.getPassword());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -90,7 +91,6 @@ public class ClientDBStore {
     }
 
     public Optional<Client> findUserByEmailAndPwd(String email, String password) {
-        Client client = new Client();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
                      "SELECT * FROM CLIENT WHERE email = ? AND password = ?")
@@ -99,13 +99,13 @@ public class ClientDBStore {
             ps.setString(2, password);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    client =  setPostData(it);
+                    return Optional.ofNullable(setPostData(it));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Optional.ofNullable(client);
+        return Optional.empty();
     }
 
     public Client setPostData(ResultSet resultSet) throws SQLException {

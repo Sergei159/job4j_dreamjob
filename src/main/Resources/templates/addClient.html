@@ -21,7 +21,7 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Dream Job <small th:text="${client}"></small></a>
+        <a class="navbar-brand" th:href="@{/index}">Dream Job </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,6 +34,14 @@
                 <a class="nav-item nav-link" th:href="@{/formAddCandidate}">Добавить кандидата</a>
                 <a class="nav-item nav-link" th:href="@{/clients}">Пользователи</a>
                 <a class="nav-item nav-link active" th:href="@{/addClient}">Добавить пользователя</a>
+                <a class="nav-item nav-link" th:if="${client.name == 'Гость'}" th:href="@{/loginPage}">
+                    <span th:text="${client.name}"></span>
+                    <span> | Войти</span>
+                </a>
+                <a class="nav-item nav-link" th:if="${client.name != 'Гость'}" th:href="@{/logout}">
+                    <span th:text="${client.name}"></span>
+                    <span> | Выйти</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -49,8 +57,11 @@
                         <label for="name">Имя пользователя
                             <input type="text" class="form-control" name="name" id="name">
                         </label>
-                        <label for="email">e-Mail
+                        <label for="email">email
                             <input type="text" class="form-control" name="email" id="email">
+                        </label>
+                        <label for="password">Пароль
+                            <input type="text" class="form-control" name="password" id="password">
                         </label>
                         <button type="submit" class="btn btn-primary">Зарегистрировать</button>
                 </form>

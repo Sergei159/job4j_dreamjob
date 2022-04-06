@@ -5,9 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.dreamjob.model.City;
+import ru.job4j.dreamjob.model.Client;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
+
+import javax.servlet.http.HttpSession;
 
 @ThreadSafe
 @Controller
@@ -23,13 +26,25 @@ public class PostController {
 
 
     @GetMapping("/posts")
-    public String posts(Model model) {
+    public String posts(Model model, HttpSession session) {
+        Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            client = new Client();
+            client.setName("Гость");
+        }
+        model.addAttribute("client", client);
         model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
     @GetMapping("/addPost")
-    public String addPost(Model model) {
+    public String addPost(Model model, HttpSession session) {
+        Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            client = new Client();
+            client.setName("Гость");
+        }
+        model.addAttribute("client", client);
         model.addAttribute("post", new Post());
         model.addAttribute("cities", cityService.getAllCities());
         return "addPost";
@@ -37,7 +52,13 @@ public class PostController {
 
 
     @GetMapping("/formAddPost")
-    public String formAddPost(Model model) {
+    public String formAddPost(Model model, HttpSession session) {
+        Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            client = new Client();
+            client.setName("Гость");
+        }
+        model.addAttribute("client", client);
         model.addAttribute("cities", cityService.getAllCities());
         return "addPost";
     }
