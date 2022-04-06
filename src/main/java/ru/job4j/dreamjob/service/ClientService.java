@@ -35,4 +35,8 @@ public class ClientService {
         return store.findById(id);
     }
 
+    public Optional<Client> findUserByEmailAndPwd(String email, String password) {
+        return store.findUserByEmailAndPwd(email, password);
+    }
+
 }

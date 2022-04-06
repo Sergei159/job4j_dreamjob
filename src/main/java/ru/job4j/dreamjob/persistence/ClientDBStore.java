@@ -89,11 +89,31 @@ public class ClientDBStore {
         return null;
     }
 
+    public Optional<Client> findUserByEmailAndPwd(String email, String password) {
+        Client client = new Client();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement(
+                     "SELECT * FROM CLIENT WHERE email = ? AND password = ?")
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    client =  setPostData(it);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(client);
+    }
+
     public Client setPostData(ResultSet resultSet) throws SQLException {
         return new Client(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
-                resultSet.getString("email")
+                resultSet.getString("email"),
+                resultSet.getString("password")
         );
     }
 }

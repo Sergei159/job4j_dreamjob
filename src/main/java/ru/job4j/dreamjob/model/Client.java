@@ -7,16 +7,18 @@ public class Client {
     private int id;
     private String name;
     private String email;
+    private String password;
 
 
 
     public Client() {
     }
 
-    public Client(int id, String name, String email) {
+    public Client(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 
     @Override
@@ -58,5 +60,13 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

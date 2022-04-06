@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.model.Client;
 import ru.job4j.dreamjob.service.ClientService;
 
@@ -39,6 +40,14 @@ public class ClientController {
         return "failClient";
     }
 
+
+    @GetMapping("/loginPage")
+    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
+        model.addAttribute("fail", fail != null);
+        return "login";
+    }
+
+
     @PostMapping("/failRedirect")
     public String failRedirect(Model model) {
         return "redirect:/clients";
@@ -53,6 +62,17 @@ public class ClientController {
             return "redirect:/failClient";
         }
         return "redirect:/clients";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute Client user) {
+        Optional<Client> userDb = clientService.findUserByEmailAndPwd(
+                user.getEmail(), user.getPassword()
+        );
+        if (userDb.isEmpty()) {
+            return "redirect:/loginPage?fail=true";
+        }
+        return "redirect:/index";
     }
 }
 
