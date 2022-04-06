@@ -23,8 +23,8 @@ public class PostService {
         return store.findAll();
     }
 
-    public void add(Post post) {
-        store.add(post);
+    public Post add(Post post) {
+        return store.add(post);
     }
 
     public void update(Post post) {
