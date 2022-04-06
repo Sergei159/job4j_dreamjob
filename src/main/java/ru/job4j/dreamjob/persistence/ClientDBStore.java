@@ -37,7 +37,7 @@ public class ClientDBStore {
     }
 
 
-    public Optional<Client>  add(Client client) {
+    public Optional<Client> add(Client client) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
                      "INSERT INTO CLIENT(name, email) VALUES (?, ?)",
@@ -54,7 +54,7 @@ public class ClientDBStore {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Optional.of(client);
+        return Optional.ofNullable(client);
     }
 
     public void update(Client client) {
