@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.util.Properties;
 
 @SpringBootApplication

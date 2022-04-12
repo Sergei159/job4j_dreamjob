@@ -54,6 +54,7 @@ public class ClientDBStore {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            client = null;
         }
         return Optional.ofNullable(client);
     }
