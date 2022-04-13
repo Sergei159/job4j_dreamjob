@@ -22,10 +22,12 @@ public class AuthFilter implements Filter {
             chain.doFilter(req, res);
             return;
         }
+        /**
         if (req.getSession().getAttribute("user") == null) {
             res.sendRedirect(req.getContextPath() + "/loginPage");
             return;
         }
+         */
         chain.doFilter(req, res);
     }
 }

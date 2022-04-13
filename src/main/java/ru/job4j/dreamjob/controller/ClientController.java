@@ -68,6 +68,31 @@ public class ClientController {
         return "redirect:/index";
     }
 
+    @GetMapping("/formRegistration")
+    public String formRegistration(Model model,
+                                   @RequestParam(name = "fail", required = false) Boolean fail,
+                                   HttpSession session) {
+        Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            client = new Client();
+            client.setName("Гость");
+        }
+        model.addAttribute("client", client);
+        model.addAttribute("fail", fail != null);
+        return "addClient";
+    }
+
+    @GetMapping("/successClient")
+    public String successClient(Model model, HttpSession session) {
+        Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            client = new Client();
+            client.setName("Гость");
+        }
+        model.addAttribute("client", client);
+        return "successClient";
+    }
+
 
     @PostMapping("/failRedirect")
     public String failRedirect(Model model) {
@@ -80,9 +105,9 @@ public class ClientController {
         Optional<Client> regUser = clientService.add(client);
         if (regUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
-            return "redirect:/failClient";
+            return "redirect:/formRegistration?fail=true";
         }
-        return "redirect:/clients";
+        return "redirect:/successClient";
     }
 
     @PostMapping("/login")
@@ -95,6 +120,11 @@ public class ClientController {
         }
         HttpSession session = req.getSession();
         session.setAttribute("client", clientDb.get());
+        return "redirect:/index";
+    }
+
+    @PostMapping("/successRedirect")
+    public String successRedirect(Model model) {
         return "redirect:/index";
     }
 }
