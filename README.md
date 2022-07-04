@@ -1,9 +1,22 @@
 # job4j_dreamjob
 
-В системе будут две модели: вакансии и кандидаты. 
+This project is employment agency web-service
 
-Кандидаты будут публиковать резюме. Кадровики будут публиковать вакансии о работе.
+###Technologies
 
-Кандидаты могут откликнуться на вакансию. Кадровик может пригласить на вакансию кандидата.
+Spring
+PostgreSQL 
+Thymeleaf
 
-Используется Spring boot, как основная библиотека
+
+###Functionality
+Main page
+![ScreenShot](images/1.JPG)
+Add Vacancy
+![ScreenShot](images/2.JPG)
+Login page
+![ScreenShot](images/3.JPG)
+Candidates
+![ScreenShot](images/4.JPG)
+Users
+![ScreenShot](images/5.JPG)
